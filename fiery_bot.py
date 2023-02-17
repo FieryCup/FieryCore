@@ -3,6 +3,8 @@ from typing import Any
 
 from discord.ext.commands import Bot, ExtensionFailed
 
+__all__ = {"FieryBot"}
+
 logger = logging.getLogger("bot.core")
 
 

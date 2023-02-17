@@ -5,9 +5,10 @@ import sys
 
 import discord
 
-from config import load_config
-from libs.FieryCore.fiery_bot import FieryBot
+from libs.FieryCore import FieryBot
 from logger import Logger
+
+__all__ = {"FieryCore"}
 
 logging_dict = {
     'DEBUG': logging.DEBUG,
