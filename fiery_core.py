@@ -28,7 +28,7 @@ class FieryCore:
             application_id: int,
             extensions: list[str],
             extensions_path: str = "ext",
-            bot_log_path: str = "logs/bot_latest.log",
+            bot_log_path: str = "logs/bot.log",
             bot_log_level: logging = logging.INFO,
             discord_log_path: str = "logs/discord.log",
             discord_log_level: logging = logging.INFO,
@@ -71,31 +71,26 @@ class FieryCore:
         :param token: The authentication token
         :return:
         """
-        # TODO: Refactor run()
 
+        # Brief information about the Python and Discord versions
         logger.info(f"Python version: {sys.version}")
         logger.info(f"Discord module version: {discord.__version__}")
 
+        # Creating non-existent files
         if not os.path.exists(self.discord_log_path):
             with open(self.discord_log_path, "w"):
                 pass
-        Logger(self.discord_log_level).set_logging(
-            "discord", self.discord_log_path, True)
-
         if not os.path.exists(self.bot_log_path):
             with open(self.bot_log_path, "w"):
                 pass
+
+        # Creating loggers
+        Logger(self.discord_log_level).set_logging(
+            "discord", self.discord_log_path, True)
         Logger(self.bot_log_level).set_logging(
             "bot", self.bot_log_path, True)
 
-        modification_date = datetime.datetime.fromtimestamp(
-            os.path.getmtime(self.bot_log_path))
-        # if os.path.exists(self.bot_log_path):
-        #     os.rename(
-        #         self.bot_log_path,
-        #         f"logs/bot_"
-        #         f"{modification_date.strftime('%Y-%m-%d-%H-%M-%S')}.log")
-
+        # Creating a bot
         bot = FieryBot(
             command_prefix=self.command_prefix,
             intents=self.intents,
@@ -106,4 +101,5 @@ class FieryCore:
             extensions_path=self.extensions_path
         )
 
+        # Launching the bot
         bot.run(token, log_handler=None)
