@@ -28,6 +28,7 @@ class FieryBot(Bot):
         # TODO: Refactor setup_hook()
         logger.info("Loading extensions ...")
 
+        # Loading extensions
         loaded_extensions = []
         not_loaded_extensions = []
         for extension in self.extensions_list:
@@ -51,11 +52,15 @@ class FieryBot(Bot):
         else:
             logger.info("No errored extensions")
 
+        # Syncing commands
         logger.info("Syncing commands...")
         await self.tree.sync()
         synced_commands = [command.qualified_name for command
                            in self.tree.get_commands()]
-        logger.info(f"Synchronized commands: {', '.join(synced_commands)}")
+        if synced_commands:
+            logger.info(f"Synchronized commands: {', '.join(synced_commands)}")
+        else:
+            logger.info("No synchronized commands")
 
     async def on_ready(self):
         logger.info(f"Logged into: {self.user} ({self.user.id})")
