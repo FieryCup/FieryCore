@@ -28,6 +28,8 @@ class FieryCore:
             application_id: int,
             extensions: list[str],
             extensions_path: str = "ext",
+            localizer_path: str = "lang",
+            config_path: str = "config.yaml",
             bot_log_path: str = "logs/bot.log",
             bot_log_level: logging = logging.INFO,
             discord_log_path: str = "logs/discord.log",
@@ -35,7 +37,9 @@ class FieryCore:
             command_prefix: str = "fc.",
             activity: discord.Activity = discord.Activity(),
             status: discord.Status = discord.Status.online,
-            intents: discord.Intents = discord.Intents.all(),
+            intents: discord.Intents = discord.Intents().all(),
+            reset_commands: bool = True,
+            translator: discord.app_commands.Translator = None,
     ):
         """
         The core for the Discord bot
@@ -43,6 +47,8 @@ class FieryCore:
         :param application_id: Application ID
         :param extensions: List of bot extensions
         :param extensions_path: The path to extensions through a point, for example: core.extensions
+        :param localizer_path: The path to translations
+        :param config_path: The path to config
         :param bot_log_path: Path to the bot logs file
         :param bot_log_level: Bot logging level
         :param discord_log_path: The path to the Discord logs file
@@ -51,10 +57,13 @@ class FieryCore:
         :param activity: Bot activity
         :param status: Bot status
         :param intents: Bot intents
+        :param reset_commands: Reset commands
         """
         self.application_id = application_id
         self.extensions = extensions
         self.extensions_path = extensions_path
+        self.localizer_path = localizer_path
+        self.config_path = config_path
         self.bot_log_path = bot_log_path
         self.bot_log_level = bot_log_level
         self.discord_log_path = discord_log_path
@@ -63,6 +72,7 @@ class FieryCore:
         self.activity = activity
         self.status = status
         self.intents = intents
+        self.reset_commands = reset_commands
 
     def run(self, token: str) -> None:
         """
@@ -98,7 +108,10 @@ class FieryCore:
             status=self.status,
             application_id=self.application_id,
             extensions=self.extensions,
-            extensions_path=self.extensions_path
+            extensions_path=self.extensions_path,
+            reset_commands=self.reset_commands,
+            config_path=self.config_path,
+            localizer_path=self.localizer_path,
         )
 
         # Launching the bot
